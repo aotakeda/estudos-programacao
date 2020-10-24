@@ -54,7 +54,7 @@ Já pra evitar ataques XSS, você pode mandar o token dentro de um cookie ao inv
 
 Imaginemos que um token foi interceptado e quem interceptou consegue fazer tudo o que o usuário real conseguiria fazer. Uma das formas de mitigar o dano que o atacante possa fazer é setar um tempo baixo de expiração do token. O problema desse método é que o usuário real que não foi atacado vai ter que relogar a cada X tempo  se for um tempo muito curto, a experiência dessa pessoa não vai ser boa.
 
-A solução pra esse problema do usuário ter que relogar várias vezes enquanto usa a aplicação é a `atualização de tokens`. Um token atualizado possui um período maior pra expirar e não passa pelo client-side, é armazenado num banco de dados. O banco de dados que possuem esses tokens devem possuir todas as medidas de segurança pra proteger esses tokens. Caso alguém consiga invadir esse banco de dados, é uma falha de segurança gravíssima.
+A solução pra esse problema do usuário ter que relogar várias vezes enquanto usa a aplicação é a `atualização de tokens`. Um token atualizado possui um período maior pra expirar e não passa pelo client-side, é armazenado num banco de dados. O banco de dados que possui esses tokens deve possuir todas as medidas de segurança pra protegê-los. Caso alguém consiga invadir esse banco de dados, é uma falha de segurança gravíssima.
 
 Quando o token atualizado expira, aí realmente o usuário precisa logar novamente.
 
