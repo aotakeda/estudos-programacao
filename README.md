@@ -12,7 +12,7 @@ Para fazer autenticação via JWT, é preciso seguir alguns passos:
 
 1. No momento que o usuário loga no sistema, o backend emite um JWT para o usuário e manda para o `client-side`.
 
-2. Esse token possui uma assinatura especial que valida como um token que foi emitido pelo sistema.
+2. Esse token possui uma assinatura especial que valida se o token foi emitido pelo sistema ou não.
 
 3. O cliente guarda esse token no browser e manda ele junto com todo request que fizer ao servidor, porque o token é usado pra verificar a autenticação do usuário.
 
