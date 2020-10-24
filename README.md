@@ -1,3 +1,3 @@
-# Programming Studies
+# Estudos Programação
 
-Notes of things I'm studying about programming (in no particular order).
+Notas sobre o que estou estudando, em ordem aleatória.
