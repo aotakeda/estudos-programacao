@@ -20,7 +20,7 @@ Se você reparar no formato de um JWT, ele é composto por 3 partes separadas po
 
 **Header**
 
-O header possui metadados sobre o token em formato de JSON. O primeiro é `alg` que é o algoritmo usado pra assinar o token quando for gerar a assinatura e o segundo é `typ` que sempre é JWT que é o tipo de token utilizado.
+O header possui metadados sobre o token em formato de JSON. O primeiro é `alg` que é o algoritmo usado pra assinar o token e o segundo é `typ` que sempre é JWT que é o tipo de token utilizado.
 
 **Payload**
 
