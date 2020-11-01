@@ -109,7 +109,7 @@ Uma arquitetura que escala bem para um caso específico, é criada levando em co
 
 Devemos e podemos desenhar sistemas de uma maneira que (se tudo der certo) minimiza a dor para mantê-lo, o que evita criar um software legado. Para isso acontecer, devemos prestar atenção em três princípios de design de software em especial:
 
-1. Operabilidade
+1. **Operabilidade**
 
 O sistema é fácil de utilizar e roda tranquilo.
 
@@ -135,7 +135,7 @@ Uma boa operação significa tornar fáceis tarefas de manutenção, permitindo 
 - "Auto-cura" quando necessário, mas também dar a possibilidade para os administradores controlar manualmente o estado do sistema;
 - Comportamentos previsíveis, minimizando surpresas.
 
-2. Simplicidade
+2. **Simplicidade**
 
 Novos e novas engenheiras conseguem entender o sistema, porque foi removido o máximo de complexidade possível do sistema.
 
@@ -145,7 +145,7 @@ Uma das melhores ferramentas que temos pra remover complexidade acidental é pel
 
 Por exemplo, linguagens de alto-nível são abstrações que "escondem" código de máquina, registros da CPU e syscalls.
 
-3. Evoluível
+3. **Evoluível**
 
 Facilitar pra engenheiros(as) a fazer modificações ao sistema no futuro, adaptando-o para casos de usos não previstos conforme os requisitos forem mudando. Também é conhecido como extensibilidade, modificabilidade ou plasticidade.
 
