@@ -83,11 +83,76 @@ Para verificar quão ruim estão os outlier você pode olhar os percentis mais a
 
 Esses percentis altos de tempo de resposta são conhecidos como `tail latencies`.
 
+Reduzir tempo de resposta em percentis altos é difícil por eles serem facilmente afetados por eventos aleatórios fora do nosso controle e os benefícios vão diminuindo quanto maior o percentil.
+
+É necessário só uma chamada lenta pra fazer todo o request do usuário final lento. Mesmo se só uma pequena porcentagem das chamadas pro backend forem lentas, a chance de uma chamada ser lenta aumenta se o request do usuário final precisa fazer várias chamadas pro backend. Então, uma maior proporção de requests dos usuários finais acabam sendo lentas (um efeito chamado `tail latency amplification`).
+
 **Latência e tempo de resposta**
 
 Geralmente, são usados como sinônimos, mas não são. O tempo de resposta é o que o cliente "enxerga" incluindo o tempo pra processar o request (tempo de serviço) além de incluir atrasos de rede e de filas.
 
 Latência é a duração que um request espera pra ser processado (esperando serviço).
+
+**Maneiras de lidar com carga**
+
+Sempre comentam sobre a dicotomia entre escalar verficalmente (mudar para uma máquina mais poderosa) e escalar horizontalmente (distribuir a carga por várias máquinas menores). Distribuir a carga por várias máquinas é conhecido por ser uma arquitetura `shared-nothing`. Um sistema pode rodar numa máquina única pode ser mais simples, mas máquinas com grande desempenho podem custar muito dinheiro o que faz com que seja inevitável escalar horizontalmente com cargas muito intensas.
+
+Uma boa arquitetura geralmente envolve uma mistura pragmática entre as duas maneiras: por exemplo, usar várias máquinas boas pode ser mais simples e barato do que um grande número de pequenas máquinas virtuais.
+
+Alguns sistemas são `elásticos`, o que significa que automaticamente adicionam recursos computacionais quando detectam um aumento de carga, enquanto outros sistemas são escalados manualmente (uma pessoa analisa a capacidade e decide adicionar mais máquinas para o sistema). Um sistema elástico pode ser útil se a carga for altamente imprevisível, por outro lado, sistemas escalados manualmente são mais simples e podem ter menor surpresas operacionais.
+
+As arquiteturas de sistemas que operam em grande escala são geralmente muito específicas para cada caso de uso - não existe uma arquitetura genérica, que serve para qualquer caso e seja escalável. O problema a ser enfrentado pode de volume de leituras, de escritas, de dados a serem armazenados, complexidade desses dados, os requisitos de tempo de resposta, padrões de acesso ou uma mistura desses e outros desafios (o que geralmente é o caso).
+
+Uma arquitetura que escala bem para um caso específico, é criada levando em consideração as operações que serão mais comuns e as que serão mais raras (os parâmetros de carga). Se essas considerações estiverem erradas, o esforço de engenharia pra escalar é no mínimo desperdiçado ou no pior caso, contraproducente.
+
+### Manutenabilidade
+
+Devemos e podemos desenhar sistemas de uma maneira que (se tudo der certo) minimiza a dor para mantê-lo, o que evita criar um software legado. Para isso acontecer, devemos prestar atenção em três princípios de design de software em especial:
+
+1. Operabilidade
+
+O sistema é fácil de utilizar e roda tranquilo.
+
+Times de operações são vitais para manter o sistema rodando sem problemas. Um bom time geralmente é responsável, dentre outras coisas, por:
+
+- Monitorar a saúde do sistema e restabelecer rapidamente o serviço se tiver algum problema;
+- Descobrir as causas dos problemas, como falhas no sistemas ou performances degradadas;
+- Manter o software e plataformas atualizados, incluindo patches de segurança;
+- Ficar de olho em como diferentes sistemas afetam uns aos outros, para que problemas sejam evitados antes de acontecerem;
+- Manter e estabelecer boas práticas e ferramentas para deploy, gerenciamento de configuração, etc.;
+- Fazer tarefas complexas de manutenção, como mover uma aplicação de uma plataforma pra outra;
+- Manter a segurança do sistema se uma mudança for feita nas configurações;
+- Definir processos que fazem as operações serem previstas e ajudar a manter o ambiente de produção estável;
+- Preservar o conhecimento da organização sobre o sistema, mesmo com rotatividade no time.
+
+Uma boa operação significa tornar fáceis tarefas de manutenção, permitindo o time focar em esforços de maior valor. É possível fazer várias coisas para manter a rotina mais fácil:
+
+- Promover visibilidade no comportamento do runtime e interno do sistema, com bom monitoramento;
+- Promover bom suporte pra automação e integração com ferramentas padrão;
+- Evitar dependência em máquinas individuais (permitir que máquinas sejam derrubadas pra manutenção enquanto o sistema continua rodando);
+- Proporcionar boa documentação e modelos de operação fáceis de entender (se fizer X coisa, Y acontece);
+- Proporcionar bom comportamento padrão mas também dar aos administradores a liberdade de dar override neles quando necessário;
+- "Auto-cura" quando necessário, mas também dar a possibilidade para os administradores controlar manualmente o estado do sistema;
+- Comportamentos previsíveis, minimizando surpresas.
+
+2. Simplicidade
+
+Novos e novas engenheiras conseguem entender o sistema, porque foi removido o máximo de complexidade possível do sistema.
+
+Existem vários sintomas possíveis de complexidade: explosão do espaço de estado, acoplamento rígido de módulos, dependências confusas, nomes e terminologias inconsistentes, hacks feitos pra melhorar performance, puxadinhos pra resolver problemas de outros lugares, etc.
+
+Uma das melhores ferramentas que temos pra remover complexidade acidental é pela `abstração`. Uma boa abstração pode esconder vários detalhes da implementação com uma fachada simples e limpa. Ua boa abstração pode também ser usada por diferentes tipos de aplicações, não só essa reutilização ser mais eficiente do que reimplementar coisas similares várias vezes, mas também melhora a qualidade do software. Conforme a qualidade é melhorada no componente abstraído, todas as aplicações que o utilizam são beneficiadas.
+
+Por exemplo, linguagens de alto-nível são abstrações que "escondem" código de máquina, registros da CPU e syscalls.
+
+3. Evoluível
+
+Facilitar pra engenheiros(as) a fazer modificações ao sistema no futuro, adaptando-o para casos de usos não previstos conforme os requisitos forem mudando. Também é conhecido como extensibilidade, modificabilidade ou plasticidade.
+
+É muito díficil que um sistema mantenha todos os requisitos de quando foi construído.
+
+A facilidade com que você modifica o sistema e o adapta a requisitos que podem mudar, é fortemente relacionado a simplicidade e suas abstrações: sistemas simples e fáceis de entender são geralmente mais fáceis de modificar que um complexo. 
+
 
 # Cache
 
